@@ -39,9 +39,24 @@ int main(int argc, char const *argv[])
     asio::io_context::work idle_work(ctx);
     std::thread ctx_thread([&ctx] { ctx.run(); });
     asio::error_code err;
-    tcp::resolver::results_type endpoints = tcp::resolver(ctx).resolve("example.com", "http");
+    //tcp::resolver::results_type endpoints = tcp::resolver(ctx).resolve("example.com", "http", err);
+    if(err) {
+        std::cerr << "Error resolving address: " << err.message() << "\n";
+        return 1;
+    }
     tcp::socket socket(ctx);
-    auto endpoint = asio::connect(socket, endpoints, err);
+
+    // connect to remote host
+    //auto endpoint = asio::connect(socket, endpoints, err);
+
+    // or you can do this to connect to remote host
+    //auto endpoint = asio::connect(socket, tcp::endpoint(asio::ip::address::from_string("example.com"), 80), err);
+
+    // connect to local host
+    auto local_address = asio::ip::make_address("127.0.0.1");
+    auto local_endpoint = asio::ip::tcp::endpoint(local_address, 8080);
+    socket.connect(local_endpoint, err);
+
 
     // Step. 2
     // Check if socket is open and connection is established
@@ -49,7 +64,7 @@ int main(int argc, char const *argv[])
         std::cerr << "Error: " << err.message() << "\n";
         return 1;
     }
-    std::cout << "Connected to " << endpoint.address() << ":" << endpoint.port() << "\n\n";
+    //std::cout << "Connected to " << endpoint.address() << ":" << endpoint.port() << "\n\n";
 
     if (!socket.is_open()) {
         std::cerr << "Error: Socket is not open" << "\n";
