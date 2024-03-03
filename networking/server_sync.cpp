@@ -41,7 +41,7 @@ int main(int argc, char const *argv[])
         // Read data from socket
         // Write data to socket
         // Close socket
-        socket.wait(socket.wait_read, err);
+        //socket.wait(socket.wait_read, err);
         if (err)
         {
             std::cout << "Error waiting for data: " << err.message() << std::endl;
@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
         }
         size_t bytes = socket.available();
         std::cout << "Available bytes: " << bytes << std::endl;
-        std::vector<char> buf(1024);
+        std::string buf;
         socket.read_some(asio::buffer(buf), err);
         if (err)
         {
