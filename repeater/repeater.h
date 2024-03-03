@@ -4,6 +4,11 @@
 #include <asio.hpp>
 #include <functional>
 
+/**
+ * repeater<F>
+ * Given an action of type (F) - You can configure it to start in (d) seconds, and repeat (n) times, every (s) seconds.
+ * Optionally, you can set callback (d) of type (F) to be called after done executing the action.
+ */
 template<typename F = std::function<void()>>
 class repeater {
 public:
