@@ -130,7 +130,6 @@ void listen() {
         //std::cout << ec.message() << "\n";
         listen();
     });
-    
 }
 
 std::vector<char> echo_response(std::vector<char>& req) {
